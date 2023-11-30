@@ -1,68 +1,94 @@
 import React, { useEffect, useState } from "react";
+
 import MovieList from "./component/MediaList/Media";
+
 import Header from "./component/Header/Header";
+
 import Search from "./component/Header/Search/Search";
-import './App.css'
-// import './App.css';
-// import Navbar from './component/Navbar/navbar';
-// import Intro from './component/Intro/intro';
-// import Portfolio from './component/Portfolio/portfolio';
-// import Contact from './component/Contact/contact';
-// import Skills from './component/Skills/skills';
-// import Footer from './component/Footer/footer';
 
+import Favourites from "./component/Favourite/Favourite";
 
+import RemoveFavourite from "./component/RemoveFavourite/Remove";
 
-
+import "./App.css";
 
 function App() {
+  const [movies, setMovies] = useState([]); //to manage state for api
 
-  const [movies, setMovies] = useState([])
+  const [searchValue, setSearchValue] = useState(""); // to manage state for search input
 
-  const [SearchValue, SetSearchValue] = useState('')
+  const [favouriteMovie, setFavouriteMovie] = useState([]);
 
-  const getMovieList = async () => {
-    const url = "http://www.omdbapi.com/?i=tt3896198&apikey=8bc29b13"
+  const getMovieList = async (searchValue) => {
+    const url = `http://www.omdbapi.com/?s=${searchValue}&apikey=8bc29b13`;
 
-    const request = await fetch(url)
+    try {
+      const response = await fetch(url);
 
-    const response = await request.json()
+      const data = await response.json();
 
+      console.log("Response from API", data);
 
-    console.log(response)
-
-    if (response.Search) {
-
-      setMovies(response.Search)
+      if (data.Search) {
+        setMovies(data.Search);
+      } else {
+        console.error("No Search results:", data);
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
     }
+  };
 
+  useEffect(() => {
+    //to ensure app only load once when the API is
+    //requested and if searchValue is empty, search for hotel by default
+    getMovieList(searchValue || "popular");
+  }, [searchValue]);
 
-  }
+  const AddFavouriteMovie = (movie) => {
+    const newFavouriteMovie = [...favouriteMovie, movie];
 
+    setFavouriteMovie(newFavouriteMovie);
+  };
 
-  useEffect(() => {    //to ensure app only load once when the API is requested.
-    getMovieList( SearchValue)
-  }, [SearchValue])
+  const RemoveFavouriteMovie = (movie) => {
+    const remove = favouriteMovie.filter(
+      (favourite) => favourite.imdbID !== movie.imdbID
+    );
+    setFavouriteMovie(remove);
+  };
 
   return (
-    <div className="container">
-
+    <div className="App">
       <div className="navbar">
-
-        <Header />
-        <Search SearchValue={SearchValue} SetSearchValue={SetSearchValue} />
-
+        <Header heading="Movies" />
+        <Search SearchValue={searchValue} SetSearchValue={setSearchValue} />
       </div>
 
       <div className="container">
-
-        <MovieList movies={movies} />
-        
+        <MovieList
+          movies={movies}
+          handleComponentClick={AddFavouriteMovie}
+          Addcomponent={Favourites}
+        />
       </div>
 
-    </div>)
+<div className="fav">
 
+<Header heading="Favourites" />
+</div>
+    
+      <div className="favourites">
 
+          <MovieList
+            movies={favouriteMovie}
+            handleComponentClick={RemoveFavouriteMovie}
+            Addcomponent={RemoveFavourite}
+          />
+        </div>
+ 
+    </div>
+  );
 }
 
 export default App;
