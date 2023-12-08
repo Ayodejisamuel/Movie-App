@@ -41,7 +41,7 @@ function App() {
 
   useEffect(() => {
     //to ensure app only load once when the API is
-    //requested and if searchValue is empty, search for hotel by default
+    //requested and if searchValue is empty  by default, search for hotel
     getMovieList(searchValue || "popular");
   }, [searchValue]);
 
