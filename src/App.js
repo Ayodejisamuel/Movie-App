@@ -29,11 +29,11 @@ function App() {
 
       console.log("Response from API", data);
 
-      if (data.Search) {
-        setMovies(data.Search);
-      } else {
-        console.error("No Search results:", data);
-      }
+      // if (data.Search) {
+      //   setMovies(data.Search);
+      // } else {
+      //   console.error("No Search results:", data);
+      // }
     } catch (error) {
       console.error("Fetch error:", error);
     }
