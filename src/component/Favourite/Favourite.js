@@ -5,7 +5,7 @@ const Favourites = () => {
     return (
 <div>
 	
-<span className="container"> Favourites Movies</span>
+<span className="container"> Favourite Movies</span>
 			<svg
 				width='1em'
 				height='1em'
