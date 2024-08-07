@@ -2,8 +2,9 @@ body {
     overflow-x: hidden;
     padding: 0;
     margin: 0;
-    background-color: #f0f0f0; /* Light background color for the body */
+    background-color:#ECF0F1;
     font-family: Arial, sans-serif;
+    color: #2C3E50;
 }
 
 .App {
@@ -17,8 +18,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color:#121212;
-    color:  #ffffff;
+    background-color #2C3E50;
+    color:  #fff;
     width: 100vw;
     height: 4rem;
     padding: 1rem;
